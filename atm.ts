@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-import chalk from "chalk";
+import chalk, { backgroundColorNames } from "chalk";
 import inquirer from "inquirer";
 import figlet from "figlet";
 import { createSpinner } from "nanospinner";
@@ -21,7 +21,7 @@ function welcome() {
   });
 }
 async function Identity() {
-  let identity = await inquirer.prompt([
+  let identity: {id:string, pin:number}= await inquirer.prompt([
     {
       name: "id",
       type: "string",
@@ -29,7 +29,7 @@ async function Identity() {
     },
     {
       name: "pin",
-      type: "number",
+      type: "password",
       message: "Please enter your pin",
     },
   ]);
@@ -54,7 +54,7 @@ async function ATM(choice: string) {
   const spinner = createSpinner("Wait Please...").start();
   await Secondwait();
   spinner.success({ text: `` });
-  if (choice === "Withdraw") {
+  if (choice === "Withdraw" && balance > 0) {
     let withdrawAmount = parseFloat(prompt("Plese enter amount to withdraw"));
     balance = balance - withdrawAmount;
   } else if (choice === "Deposit") {
@@ -62,6 +62,9 @@ async function ATM(choice: string) {
     balance = balance + depositAmount;
   } else if (choice === "Exit") {
     process.exit(0);
+  }
+  else{
+    console.log(chalk.red("Sorry! You don't have any credits left"))
   }
 }
 async function showBalance() {

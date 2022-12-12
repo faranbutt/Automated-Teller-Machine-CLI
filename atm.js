@@ -28,7 +28,7 @@ async function Identity() {
         },
         {
             name: "pin",
-            type: "number",
+            type: "password",
             message: "Please enter your pin",
         },
     ]);
@@ -52,7 +52,7 @@ async function ATM(choice) {
     const spinner = createSpinner("Wait Please...").start();
     await Secondwait();
     spinner.success({ text: `` });
-    if (choice === "Withdraw") {
+    if (choice === "Withdraw" && balance > 0) {
         let withdrawAmount = parseFloat(prompt("Plese enter amount to withdraw"));
         balance = balance - withdrawAmount;
     }
@@ -62,6 +62,9 @@ async function ATM(choice) {
     }
     else if (choice === "Exit") {
         process.exit(0);
+    }
+    else {
+        console.log(chalk.red("Sorry! You don't have any credits left"));
     }
 }
 async function showBalance() {
